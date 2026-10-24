@@ -88,10 +88,26 @@
   A.bonk = function () { voice(function (t, p, v) { tone(sfxBus, 'sine', 180 * p, 120 * p, t, 0.15, 0.45 * v); noiseBurst(sfxBus, t, 0.03, 900, 3, 0.15 * v); }); };
   A.tick = function () { voice(function (t, p, v) { tone(sfxBus, 'triangle', 1200 * p, 1200 * p, t, 0.03, 0.06 * v); }); };
   A.rot = function () {
+    // cartoon "squelch": wet noise sweep + wobbly low "blorp" + a little fly buzz
     voice(function (t, p, v) {
-      var ctx = A.ctx, f = ctx.createBiquadFilter(); f.type = 'lowpass';
-      f.frequency.setValueAtTime(900, t); f.frequency.exponentialRampToValueAtTime(200, t + 0.25); f.connect(sfxBus);
-      tone(f, 'sine', 300 * p, 140 * p, t, 0.28, 0.5 * v);
+      var ctx = A.ctx;
+      var f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.Q.value = 6;
+      f.frequency.setValueAtTime(2400, t); f.frequency.exponentialRampToValueAtTime(260, t + 0.22); f.connect(sfxBus);
+      var s = ctx.createBufferSource(), g = ctx.createGain(); s.buffer = noiseBuf;
+      g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.9 * v, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.28);
+      s.connect(g); g.connect(f); s.start(t, Math.random()); s.stop(t + 0.32);
+      var lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 700; lp.connect(sfxBus);
+      var o = tone(lp, 'triangle', 220 * p, 70 * p, t + 0.03, 0.55, 0.55 * v, 0.01);
+      var lfo = ctx.createOscillator(), lg = ctx.createGain(); lfo.frequency.value = 11; lg.gain.value = 26;
+      lfo.connect(lg); lg.connect(o.frequency); lfo.start(t); lfo.stop(t + 0.62);
+      tone(sfxBus, 'sine', 130 * p, 55 * p, t + 0.02, 0.4, 0.4 * v);
+      // wah-wah drop
+      kalimba(sfxBus, midiHz(55) * p, t + 0.32, 0.25, [[1, 0.5, 0.35], [2.01, 0.12, 0.2]]);
+      kalimba(sfxBus, midiHz(52) * p, t + 0.5, 0.25, [[1, 0.5, 0.5], [2.01, 0.12, 0.25]]);
+      // fly buzz
+      var bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 900; bp.Q.value = 3; bp.connect(sfxBus);
+      var bz = tone(bp, 'sawtooth', 190, 210, t + 0.25, 0.9, 0.06 * v, 0.08);
+      var bl = ctx.createOscillator(), bg = ctx.createGain(); bl.frequency.value = 7; bg.gain.value = 30; bl.connect(bg); bg.connect(bz.frequency); bl.start(t + 0.25); bl.stop(t + 1.2);
     });
   };
   A.star = function (i) { voice(function (t, p, v) { kalimba(sfxBus, midiHz([88, 91, 96][i % 3]), t, 0.5 * v); }); };
