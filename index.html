@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#CFEAF6">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Ripe Rush</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="cv"></canvas>
+
+<div id="hud" class="hidden">
+  <button id="btnPause" class="pill small" aria-label="Pause">II</button>
+</div>
+
+<section id="title" class="screen">
+  <div class="logo"><span class="l1">Ripe</span><span class="l2">Rush</span></div>
+  <p class="tag">Pack every fruit before it goes off!</p>
+  <button id="btnPlay" class="pill big">Play</button>
+  <button id="btnSettingsT" class="pill ghost">Settings</button>
+  <div id="version" class="version">test build v0.1</div>
+</section>
+
+<section id="levels" class="screen hidden">
+  <div class="topbar"><button id="btnLvBack" class="pill small">Back</button><h2>Pick a level</h2><span id="starTotal" class="startotal"></span></div>
+  <div id="lvGrid" class="lvgrid"></div>
+</section>
+
+<section id="pause" class="screen overlay hidden">
+  <div class="card">
+    <h2>Paused</h2>
+    <div class="toggles" data-toggles></div>
+    <button id="btnResume" class="pill big">Resume</button>
+    <div class="row"><button id="btnRestart" class="pill">Restart</button><button id="btnQuit" class="pill">Levels</button></div>
+  </div>
+</section>
+
+<section id="settings" class="screen overlay hidden">
+  <div class="card">
+    <h2>Settings</h2>
+    <div class="toggles" data-toggles></div>
+    <button id="btnSettingsDone" class="pill big">Done</button>
+  </div>
+</section>
+
+<section id="result" class="screen overlay hidden">
+  <div class="card">
+    <h2 id="resTitle">Level complete!</h2>
+    <div id="resStars" class="resstars"></div>
+    <p id="resText"></p>
+    <button id="btnNext" class="pill big">Next</button>
+    <div class="row"><button id="btnRetry" class="pill">Replay</button><button id="btnResLevels" class="pill">Levels</button></div>
+  </div>
+</section>
+
+<section id="debug" class="screen hidden">
+  <div class="topbar"><button id="btnDbgBack" class="pill small">Back</button><h2>Playtest stats</h2></div>
+  <pre id="dbgText"></pre>
+  <div class="row wrap"><button id="btnDbgCopy" class="pill">Copy</button><button id="btnDbgUnlock" class="pill">Unlock all</button><button id="btnDbgReset" class="pill">Reset all</button></div>
+</section>
+
+<script src="logic.js"></script>
+<script src="levels.js"></script>
+<script src="art.js"></script>
+<script src="audio.js"></script>
+<script src="main.js"></script>
+</body>
+</html>

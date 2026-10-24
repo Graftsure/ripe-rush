@@ -1,0 +1,6 @@
+<!doctype html><body style="margin:0"><canvas id="c"></canvas><script src="art.js"></script><script>
+var p=new URLSearchParams(location.search),S=+p.get('s')||512,m=p.get('m');var c=document.getElementById('c');c.width=c.height=S;var x=c.getContext('2d');
+var g=x.createLinearGradient(0,0,0,S);g.addColorStop(0,'#CFEAF6');g.addColorStop(1,'#F6E3EE');x.fillStyle=g;
+if(m){x.fillRect(0,0,S,S);}else{ART.roundRect(x,0,0,S,S,S*0.22);x.fill();}
+var k=m?0.62:0.8;ART.drawFruit(x,S*0.5,S*0.54,S*0.36*k,'apple',3.4,{t:0.3});
+</script></body>
